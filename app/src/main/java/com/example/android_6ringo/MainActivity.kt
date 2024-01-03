@@ -43,38 +43,40 @@ class MainActivity : ComponentActivity() {
             CompositionLocalProvider(
                 LocalComposeContext provides composeContext
             ) {
-            }
-            Android6ringoTheme {
-                Surface(color = MaterialTheme.colorScheme.background,
-                    modifier = Modifier.fillMaxSize().imePadding()
-                ) {
-                    Column(modifier = Modifier.fillMaxSize()) {
-                        Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
-                            NavGraph()
-                        }
-                        SnackbarHost(
-                            hostState = composeContext.snackbarInfoHostState,
-                            modifier = Modifier.background(Color.Transparent)
-                        ) { data ->
-                            Snackbar(
-                                snackbarData = data,
-                                containerColor = MaterialTheme.colorScheme.surface,
-                                contentColor = MaterialTheme.colorScheme.onSurface,
-                                actionColor = MaterialTheme.colorScheme.primary
-                            )
+
+                Android6ringoTheme {
+                    Surface(
+                        color = MaterialTheme.colorScheme.background,
+                        modifier = Modifier.fillMaxSize().imePadding()
+                    ) {
+                        Column(modifier = Modifier.fillMaxSize()) {
+                            Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
+                                NavGraph()
+                            }
+                            SnackbarHost(
+                                hostState = composeContext.snackbarInfoHostState,
+                                modifier = Modifier.background(Color.Transparent)
+                            ) { data ->
+                                Snackbar(
+                                    snackbarData = data,
+                                    containerColor = MaterialTheme.colorScheme.surface,
+                                    contentColor = MaterialTheme.colorScheme.onSurface,
+                                    actionColor = MaterialTheme.colorScheme.primary
+                                )
+                            }
+
+                            SnackbarHost(hostState = composeContext.snackbarErrorHostState) { data ->
+                                Snackbar(
+                                    snackbarData = data,
+                                    containerColor = MaterialTheme.colorScheme.error,
+                                    contentColor = MaterialTheme.colorScheme.onError,
+                                    actionContentColor = MaterialTheme.colorScheme.onError,
+                                    actionColor = MaterialTheme.colorScheme.error
+                                )
+                            }
                         }
 
-                        SnackbarHost(hostState = composeContext.snackbarErrorHostState) { data ->
-                            Snackbar(
-                                snackbarData = data,
-                                containerColor = MaterialTheme.colorScheme.error,
-                                contentColor = MaterialTheme.colorScheme.onError,
-                                actionContentColor = MaterialTheme.colorScheme.onError,
-                                actionColor = MaterialTheme.colorScheme.error
-                            )
-                        }
                     }
-
                 }
             }
         }
