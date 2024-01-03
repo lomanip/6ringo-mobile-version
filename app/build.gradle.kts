@@ -66,4 +66,24 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    implementation("androidx.navigation:navigation-compose:2.7.6")
+    val accompanist_version = "0.32.0"
+    implementation ("com.google.accompanist:accompanist-pager:$accompanist_version")
+    implementation ("com.google.accompanist:accompanist-pager-indicators:$accompanist_version")
+    implementation ("com.google.accompanist:accompanist-systemuicontroller:$accompanist_version")
+
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.3")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.3")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.3")
+
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+
+    implementation ("org.kodein.di:kodein-di:7.19.0")
+    implementation ("androidx.compose.runtime:runtime-livedata")
+
 }
