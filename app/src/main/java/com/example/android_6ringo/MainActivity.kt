@@ -22,6 +22,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
@@ -31,14 +32,17 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalComposeUiApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         setContent {
             val navController = rememberNavController()
             val snackbarInfo = remember { SnackbarHostState() }
             val snackbarError = remember { SnackbarHostState() }
             val keyboard = LocalSoftwareKeyboardController.current
+            val container = LocalContext.current.container()
 
             val composeContext =
-                ComposeContext(navController, keyboard, snackbarInfo, snackbarError)
+                ComposeContext(container, navController, keyboard, snackbarInfo, snackbarError)
 
             CompositionLocalProvider(
                 LocalComposeContext provides composeContext

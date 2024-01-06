@@ -12,7 +12,7 @@ var LocalComposeContext = staticCompositionLocalOf<ComposeContext> {
 }
 
 data class ComposeContext @OptIn(ExperimentalComposeUiApi::class) constructor(
-    var kodein: DI,
+    var container: Container,
     var navController: NavHostController,
     var keyboard: SoftwareKeyboardController?,
     var snackbarInfoHostState: SnackbarHostState,
