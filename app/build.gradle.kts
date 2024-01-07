@@ -85,5 +85,6 @@ dependencies {
 
     implementation ("org.kodein.di:kodein-di:7.19.0")
     implementation ("androidx.compose.runtime:runtime-livedata")
+    implementation ("io.coil-kt:coil-compose:2.5.0")
 
 }
