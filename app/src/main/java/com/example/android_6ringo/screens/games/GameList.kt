@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -32,6 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.android_6ringo.R
 import com.example.android_6ringo.ui.theme.CircularProgressSurface
+import kotlinx.coroutines.launch
 
 @Composable
 fun GameList(state: GameListState) {
@@ -48,37 +51,55 @@ fun GameList(state: GameListState) {
 
 
     Column(Modifier.fillMaxWidth()) {
-
-        Row(Modifier.padding(16.dp).horizontalScroll(rememberScrollState())) {
-            GameCategoryButton(selected = state.selectedCategory == "",
-                onChange = { state.changeCategory("") }) {
-                Text(text = "Tous")
-            }
-            Spacer(modifier = Modifier.width(16.dp))
-            GameCategoryButton(selected = state.selectedCategory == "GOLD", onChange = {
-                state.changeCategory("GOLD")
-            }) {
-                Image(painterResource(id = R.drawable.gold_icon), "", modifier=Modifier.size(16.dp))
-                Spacer(modifier = Modifier.width(16.dp))
-                Text(text = "Gold")
+        val lazyRowState = rememberLazyListState()
+        LazyRow(state = lazyRowState, modifier = Modifier.padding(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+            item {
+                GameCategoryButton(selected = state.selectedCategory == "",
+                    onChange = {
+                        state.changeCategory("")
+                        state.scope.launch { lazyRowState.animateScrollToItem(0) }
+                    }) {
+                    Text(text = "Tous")
+                }
             }
 
-            Spacer(modifier = Modifier.width(16.dp))
-            GameCategoryButton(selected = state.selectedCategory == "PLATINIUM",
-                onChange = { state.changeCategory("PLATINIUM") }) {
-                Image(painterResource(id = R.drawable.platinum_icon), "", modifier=Modifier.size(16.dp))
-                Spacer(modifier = Modifier.width(16.dp))
-                Text(text = "Platinium")
+            item {
+                GameCategoryButton(selected = state.selectedCategory == "GOLD", onChange = {
+                    state.changeCategory("GOLD")
+                    state.scope.launch { lazyRowState.animateScrollToItem(1, 100) }
+                }) {
+                    Image(painterResource(id = R.drawable.gold_icon), "", modifier=Modifier.size(16.dp))
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Text(text = "Gold")
+                }
             }
 
-            Spacer(modifier = Modifier.width(16.dp))
-            GameCategoryButton(selected = state.selectedCategory == "DIAMOND",
-                onChange = { state.changeCategory("DIAMOND") }) {
-                Image(painterResource(id = R.drawable.diamond_icon), "", modifier=Modifier.size(16.dp))
-                Spacer(modifier = Modifier.width(16.dp))
-                Text(text = "Diamond")
+            item {
+                GameCategoryButton(selected = state.selectedCategory == "PLATINIUM",
+                    onChange = {
+                        state.changeCategory("PLATINIUM")
+                        state.scope.launch { lazyRowState.animateScrollToItem(2) }
+                    }
+                ) {
+                    Image(painterResource(id = R.drawable.platinum_icon), "", modifier=Modifier.size(16.dp))
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Text(text = "Platinium")
+                }
+            }
+            item {
+                GameCategoryButton(selected = state.selectedCategory == "DIAMOND",
+                    onChange = {
+                        state.changeCategory("DIAMOND")
+                        state.scope.launch { lazyRowState.animateScrollToItem(3) }
+                    }) {
+                    Image(painterResource(id = R.drawable.diamond_icon), "", modifier=Modifier.size(16.dp))
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Text(text = "Diamond")
+                }
             }
         }
+
 
         LazyColumn(state = state.listState,
             verticalArrangement = Arrangement.spacedBy(16.dp),
