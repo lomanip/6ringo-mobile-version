@@ -8,11 +8,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import com.example.android_6ringo.GameService
 import com.example.android_6ringo.LocalComposeContext
 import com.example.android_6ringo.entities.Game
 import com.example.android_6ringo.models.PagingOptions
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import org.kodein.di.instance
 
 @Composable
@@ -20,10 +23,14 @@ fun rememberGameList(): GameListState {
     val services = LocalComposeContext.current.container.kodein
     val gameService: GameService by services.instance()
     val listState = rememberLazyListState()
-    return remember { GameListState(gameService, listState) }
+    val scope = rememberCoroutineScope()
+    return remember { GameListState(gameService, listState, scope) }
 }
 
-class GameListState(private var gameService: GameService, var listState: LazyListState) {
+class GameListState(private var gameService: GameService,
+                    var listState: LazyListState,
+                    var scope: CoroutineScope
+    ) {
     var games by mutableStateOf(listOf<Game>())
     var loadingPage by mutableStateOf(false)
     var isPristine by mutableStateOf(true)
@@ -34,10 +41,12 @@ class GameListState(private var gameService: GameService, var listState: LazyLis
     var currentPage by mutableIntStateOf(0)
     var hasNextPage by mutableStateOf(true)
 
+    var selectedCategory by mutableStateOf("")
+
     suspend fun loadPage() {
         try {
             loadingPage = true
-            val pageResult = gameService.paginate(PagingOptions(orderBy = "createAt", page = currentPage+1, limit = pageSize))
+            val pageResult = gameService.paginate(this.selectedCategory, PagingOptions(orderBy = "createAt", page = currentPage+1, limit = pageSize))
             games = games + pageResult.data
             total = pageResult.metaData.total
             currentPage += 1
@@ -50,5 +59,20 @@ class GameListState(private var gameService: GameService, var listState: LazyLis
             loadingPage = false
             Log.e(GameService::javaClass.name, "Error during load game page.", e)
         }
+    }
+
+    fun changeCategory(category: String) {
+        this.scope.launch {
+            selectedCategory = category
+            reset()
+            Log.d(this@GameListState::javaClass.name, "Load new category with ${games.size} games.")
+        }
+    }
+
+    suspend fun reset() {
+        isPristine = true
+        currentPage = 0
+        games = listOf()
+        loadPage()
     }
 }

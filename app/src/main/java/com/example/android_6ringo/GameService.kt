@@ -10,9 +10,14 @@ import com.example.android_6ringo.models.PagingResult
 class GameService(var _httpClient: HttpClient) {
     var _url = "https://6ringo.com/6ringo-api/micro-game/games"
 
-    suspend fun paginate(options: PagingOptions = PagingOptions(orderBy = "createAt")): PagingResult<Game> {
+    suspend fun paginate(category: String, pageOptions: PagingOptions = PagingOptions(orderBy = "createAt")
+                         ): PagingResult<Game> {
+        var params = pageOptions.toQueryParams()
+        if(category.isNotBlank()) {
+            params = params.plus(Pair("category", category))
+        }
         val url = "$_url/paginate"
-        val result = _httpClient.get(url, options.toQueryParams()).bodyAs<PagingResult<Game>>()
+        val result = _httpClient.get(url, params).bodyAs<PagingResult<Game>>()
 
         return result!!
     }
