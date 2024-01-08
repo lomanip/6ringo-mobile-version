@@ -11,12 +11,12 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.internal.EMPTY_REQUEST
 
-typealias QueryParams = HashMap<String, *>
+typealias QueryParams = Map<String, Any?>
 
 
 class HttpClient(private val okClient: OkHttpClient, private val objectMapper: ObjectMapper) {
 
-    suspend fun get(url: String, params: QueryParams = QueryParams()): HttpResponse {
+    suspend fun get(url: String, params: QueryParams = hashMapOf()): HttpResponse {
         val httpUrl = buildUrl(url, params)
 
         val request = Request.Builder().url(httpUrl).build()
@@ -27,7 +27,7 @@ class HttpClient(private val okClient: OkHttpClient, private val objectMapper: O
         }
     }
 
-    suspend fun post(httpUrl: String, body: Any, params: QueryParams = QueryParams()): HttpResponse {
+    suspend fun post(httpUrl: String, body: Any, params: QueryParams = hashMapOf()): HttpResponse {
         return withContext(Dispatchers.IO) {
             val url = buildUrl(httpUrl, params)
             val requestBody = objectMapper.requestBody(body)
@@ -39,7 +39,7 @@ class HttpClient(private val okClient: OkHttpClient, private val objectMapper: O
         }
     }
 
-    suspend fun post(httpUrl: String, requestBody: RequestBody, params: QueryParams = QueryParams()): HttpResponse {
+    suspend fun post(httpUrl: String, requestBody: RequestBody, params: QueryParams = hashMapOf()): HttpResponse {
         return withContext(Dispatchers.IO) {
             val url = buildUrl(httpUrl, params)
             val request = Request.Builder().url(url)
@@ -50,7 +50,7 @@ class HttpClient(private val okClient: OkHttpClient, private val objectMapper: O
         }
     }
 
-    suspend fun put(url: String, requestBody: RequestBody, params: QueryParams = QueryParams()): HttpResponse {
+    suspend fun put(url: String, requestBody: RequestBody, params: QueryParams = hashMapOf()): HttpResponse {
         return withContext(Dispatchers.IO) {
             val httpUrl = buildUrl(url, params)
             val request = Request.Builder().url(httpUrl)
@@ -62,7 +62,7 @@ class HttpClient(private val okClient: OkHttpClient, private val objectMapper: O
     }
 
 
-    suspend fun delete(url: String, params: QueryParams = QueryParams()): HttpResponse {
+    suspend fun delete(url: String, params: QueryParams = hashMapOf()): HttpResponse {
         return withContext(Dispatchers.IO) {
             val httpUrl = buildUrl(url, params)
             val request = Request.Builder().url(httpUrl)
@@ -74,7 +74,7 @@ class HttpClient(private val okClient: OkHttpClient, private val objectMapper: O
     }
 
 
-    suspend fun delete(url: String, requestBody: RequestBody, params: QueryParams = QueryParams()): HttpResponse {
+    suspend fun delete(url: String, requestBody: RequestBody, params: QueryParams = hashMapOf()): HttpResponse {
         return withContext(Dispatchers.IO) {
             val httpUrl = buildUrl(url, params)
             val request = Request.Builder().url(httpUrl)
@@ -85,7 +85,7 @@ class HttpClient(private val okClient: OkHttpClient, private val objectMapper: O
         }
     }
 
-    private fun buildUrl(url: String, params: HashMap<String, *>): String {
+    private fun buildUrl(url: String, params: Map<String, *>): String {
         var urlBuilder = url.toHttpUrl().newBuilder()
         params.forEach {entry ->
             urlBuilder = urlBuilder.addEncodedQueryParameter(entry.key, entry.value.toString())
