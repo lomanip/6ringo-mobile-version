@@ -37,7 +37,7 @@ fun SplashScreen() {
     val navController = LocalComposeContext.current.navController
     LaunchedEffect(Unit) {
         delay(2000)
-        navController.navigate("games/list")
+        navController.navigate("home")
     }
     val infiniteTransition = rememberInfiniteTransition(label = "logo")
     val angle by infiniteTransition.animateFloat(

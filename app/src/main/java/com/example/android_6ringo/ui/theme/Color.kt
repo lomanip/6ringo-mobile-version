@@ -15,3 +15,7 @@ val GreenDark = Color(0xFF01C564)
 
 val GreenLight = Color(0xFF19F58E)
 val OrangeLight = Color(0xFFFFC337)
+
+val GoldColor = Color(0xFFA98700)
+val PlatiniumColor = Color(0xFF797E84)
+val DiamondColor=Color(0xFF1A8CA9)

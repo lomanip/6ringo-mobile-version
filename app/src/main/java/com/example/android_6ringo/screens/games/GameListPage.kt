@@ -17,7 +17,7 @@ import com.example.android_6ringo.LocalComposeContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GameListPage() {
+fun GameListPage(category: String) {
     val navController = LocalComposeContext.current.navController
     Scaffold(topBar = {
         TopAppBar(title = { Text("Jeux") },
@@ -27,7 +27,7 @@ fun GameListPage() {
                 }
             })
     }) {
-        val gameListState = rememberGameList()
+        val gameListState = rememberGameList(category)
         Column(Modifier.padding(it)) {
             GameList(gameListState)
         }

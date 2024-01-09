@@ -15,14 +15,16 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.navArgument
 import com.example.android_6ringo.screens.SplashScreen
 import com.example.android_6ringo.screens.games.GameListPage
 import com.example.android_6ringo.screens.home.HomePage
 
-
+val GAME_LIST_ROUTE= "games/list?category={category}"
 @Composable
 fun NavGraph() {
     val navController = LocalComposeContext.current.navController
@@ -39,8 +41,14 @@ fun NavGraph() {
                 HomePage()
             }
 
-            composable("games/list") {
-                GameListPage()
+            composable(
+                GAME_LIST_ROUTE,
+                arguments = listOf(navArgument("category") {
+                    defaultValue = ""
+                    type = NavType.StringType })
+                ) {
+                val category = it.arguments!!.getString("category") ?: ""
+                GameListPage(category)
             }
         }
 
@@ -53,7 +61,7 @@ fun NavGraph() {
             )
 
             NavigationBarItem(
-                selected = currentBackStackEntry.value?.destination?.route == "games/list",
+                selected = currentBackStackEntry.value?.destination?.route == GAME_LIST_ROUTE,
                 onClick = { navController.navigate("games/list") },
                 icon = { Icon(imageVector = Icons.Outlined.MonetizationOn, contentDescription = "") },
                 label = {Text("Jeux")}

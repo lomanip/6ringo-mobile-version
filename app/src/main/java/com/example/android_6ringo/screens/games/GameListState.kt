@@ -19,17 +19,19 @@ import kotlinx.coroutines.launch
 import org.kodein.di.instance
 
 @Composable
-fun rememberGameList(): GameListState {
+fun rememberGameList(category: String): GameListState {
     val services = LocalComposeContext.current.container.kodein
     val gameService: GameService by services.instance()
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
-    return remember { GameListState(gameService, listState, scope) }
+    return remember { GameListState(gameService, listState, scope, category) }
 }
 
 class GameListState(private var gameService: GameService,
                     var listState: LazyListState,
-                    var scope: CoroutineScope
+                    var scope: CoroutineScope,
+                    var category: String
+
     ) {
     var games by mutableStateOf(listOf<Game>())
     var loadingPage by mutableStateOf(false)
@@ -41,7 +43,7 @@ class GameListState(private var gameService: GameService,
     var currentPage by mutableIntStateOf(0)
     var hasNextPage by mutableStateOf(true)
 
-    var selectedCategory by mutableStateOf("")
+    var selectedCategory by mutableStateOf(category.ifEmpty { "" })
 
     suspend fun loadPage() {
         try {
