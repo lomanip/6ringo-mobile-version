@@ -70,7 +70,7 @@ fun GameList(state: GameListState) {
                     state.scope.launch { lazyRowState.animateScrollToItem(1, 100) }
                 }) {
                     Image(painterResource(id = R.drawable.gold_icon), "", modifier=Modifier.size(16.dp))
-                    Spacer(modifier = Modifier.width(16.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
                     Text(text = "Gold")
                 }
             }
@@ -83,7 +83,7 @@ fun GameList(state: GameListState) {
                     }
                 ) {
                     Image(painterResource(id = R.drawable.platinum_icon), "", modifier=Modifier.size(16.dp))
-                    Spacer(modifier = Modifier.width(16.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
                     Text(text = "Platinium")
                 }
             }
@@ -94,7 +94,7 @@ fun GameList(state: GameListState) {
                         state.scope.launch { lazyRowState.animateScrollToItem(3) }
                     }) {
                     Image(painterResource(id = R.drawable.diamond_icon), "", modifier=Modifier.size(16.dp))
-                    Spacer(modifier = Modifier.width(16.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
                     Text(text = "Diamond")
                 }
             }

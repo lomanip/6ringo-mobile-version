@@ -25,7 +25,7 @@ fun GameCategoryButton(selected: Boolean, onChange: () -> Unit, content: @Compos
         .background(MaterialTheme.colorScheme.surface)
 
         .clickable { onChange() }
-        .padding(8.dp),
+        .padding(16.dp, 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
         ) {
