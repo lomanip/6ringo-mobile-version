@@ -2,6 +2,7 @@ package com.example.android_6ringo.screens.games
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -19,20 +20,32 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.android_6ringo.LocalComposeContext
 import com.example.android_6ringo.entities.Game
 import com.example.android_6ringo.helpers.LONG_DATE_FORMAT
 import com.example.android_6ringo.helpers.formatGameStatus
 import com.example.android_6ringo.helpers.getStatusColor
 
+
 @Composable
-fun GameListItem (game: Game){
+fun GameListItem (game: Game) {
+    val controller = LocalComposeContext.current.navController
+    GameListItem(game, onClick = {
+        controller.navigate("games/${game._id}")
+    })
+}
+@Composable
+fun GameListItem (game: Game, onClick: (game: Game) -> Unit){
     val statusBgColor =
     Surface(modifier = Modifier
         .fillMaxWidth()
+        .clickable { onClick(game) }
         .clip(RoundedCornerShape(16.dp))) {
         Column {
             Box() {
-                Box(modifier=Modifier.fillMaxWidth().aspectRatio(16f/9f)) {
+                Box(modifier= Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(16f / 9f)) {
                     AsyncImage(game.article!!.images[0].thumbnailUrl,
                         "Article image",
                         contentScale = ContentScale.FillHeight,

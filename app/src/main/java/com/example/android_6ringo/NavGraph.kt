@@ -22,6 +22,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
 import com.example.android_6ringo.screens.SplashScreen
 import com.example.android_6ringo.screens.games.GameListPage
+import com.example.android_6ringo.screens.games.home.GameHomePage
 import com.example.android_6ringo.screens.home.HomePage
 
 val GAME_LIST_ROUTE= "games/list?category={category}"
@@ -50,6 +51,11 @@ fun NavGraph() {
                 val category = it.arguments!!.getString("category") ?: ""
                 GameListPage(category)
             }
+
+            composable("games/{gameId}") {
+                val gameId = it.arguments!!.getString("gameId") ?: ""
+                GameHomePage(gameId)
+            }
         }
 
         NavigationBar(Modifier.fillMaxWidth()) {
@@ -66,6 +72,8 @@ fun NavGraph() {
                 icon = { Icon(imageVector = Icons.Outlined.MonetizationOn, contentDescription = "") },
                 label = {Text("Jeux")}
             )
+
+
 
             NavigationBarItem(selected = false, onClick = { /*TODO*/ },
                 icon = { Icon(imageVector = Icons.Outlined.ConfirmationNumber, contentDescription = "") },

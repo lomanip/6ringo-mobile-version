@@ -22,4 +22,10 @@ class GameService(var _httpClient: HttpClient) {
         return result!!
     }
 
+    suspend fun get(id: String): Game {
+        val url = "$_url/$id"
+        val result = _httpClient.get(url).bodyAs<Game>()
+        return result!!
+    }
+
 }
