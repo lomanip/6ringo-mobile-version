@@ -31,6 +31,7 @@ class GameHomeState(private var gameService: GameService,
     var selectedImage by mutableStateOf(Image())
     val images get() = if(game.article?.images != null) game.article!!.images else listOf()
 
+
     suspend fun load() {
         try {
             isLoading = true
