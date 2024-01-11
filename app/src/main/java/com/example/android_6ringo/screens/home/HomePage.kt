@@ -40,50 +40,10 @@ import com.example.android_6ringo.ui.theme.PlatiniumColor
 @Composable
 fun HomePage() {
     val navController = LocalComposeContext.current.navController
+    val state = rememberHomePageState()
     Column(Modifier.fillMaxSize()) {
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(1.6f)) {
-            Image(painterResource(id = R.drawable.spinnerbackground_1280_1), "",
-                Modifier.fillMaxWidth(), contentScale = ContentScale.FillWidth)
-            Box(
-                Modifier
-                    .fillMaxSize()
-                    .background(Color.Black.copy(alpha = .5f)))
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.CenterStart)
-                    .padding(horizontal = 16.dp)) {
-                Text("Bienvenue sur 6ringo votre marché de rêve",
-                    fontWeight = FontWeight.SemiBold,
-                    style = MaterialTheme.typography.titleLarge
-                )
-
-                Spacer(modifier = Modifier.height(32.dp))
-                Text("Choisissez votre catégorie",
-                    fontWeight = FontWeight.SemiBold,
-                    style = MaterialTheme.typography.bodyLarge
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier= Modifier
-                        .fillMaxWidth()
-                        .horizontalScroll(rememberScrollState())) {
-                    HomeCategoryBox(iconRes = R.drawable.gold_icon, label = "Gold", color = GoldColor) {
-                        navController.navigate("games/list?category=GOLD")
-                    }
-
-                    HomeCategoryBox(iconRes = R.drawable.platinum_icon, label = "Platinium", color = PlatiniumColor) {
-                        navController.navigate("games/list?category=PLATINIUM")
-                    }
-
-                    HomeCategoryBox(iconRes = R.drawable.diamond_icon, label = "Diamond", color = DiamondColor) {
-                        navController.navigate("games/list?category=DIAMOND")
-                    }
-
-                }
-            }
-        }
+        HomeBanner()
+        Spacer(modifier = Modifier.height(32.dp))
+        HomeHotGames(state)
     }
 }

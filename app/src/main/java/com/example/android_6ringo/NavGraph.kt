@@ -67,7 +67,7 @@ fun NavGraph() {
             )
 
             NavigationBarItem(
-                selected = currentBackStackEntry.value?.destination?.route == GAME_LIST_ROUTE,
+                selected = currentBackStackEntry.value?.destination?.route?.startsWith("games/") ?: false,
                 onClick = { navController.navigate("games/list") },
                 icon = { Icon(imageVector = Icons.Outlined.MonetizationOn, contentDescription = "") },
                 label = {Text("Jeux")}
