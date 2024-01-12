@@ -30,22 +30,41 @@ class HomePageState(
 ) {
 
     var hotGames by mutableStateOf(listOf<Game>())
+    var upcomingGames by mutableStateOf(listOf<Game>())
 
-    var isLoadingHotGame by mutableStateOf(false)
+    var isLoadingHotGames by mutableStateOf(false)
+    var isLoadingUpcomingGames by mutableStateOf(false)
+
 
     suspend fun loadHotGames() {
         try {
-            isLoadingHotGame = true
+            isLoadingHotGames = true
             val pageResult =
                 gameService.paginate("", PagingOptions(orderBy = "createAt", limit = 5))
             hotGames = pageResult.data
 
-            isLoadingHotGame = false
+            isLoadingHotGames = false
 
             Log.d(this.javaClass.name, "Load ${pageResult.data.size} hot games.")
         } catch (e: Exception) {
-            isLoadingHotGame = false
+            isLoadingHotGames = false
             Log.e(GameService::javaClass.name, "Error during load hot game page.", e)
+        }
+    }
+
+
+    suspend fun loadUpcomingGames() {
+        try {
+            isLoadingUpcomingGames = true
+            val pageResult =
+                gameService.paginate("", PagingOptions(orderBy = "createAt", limit = 5))
+            upcomingGames = pageResult.data
+
+            isLoadingHotGames = false
+            Log.d(this.javaClass.name, "Load ${pageResult.data.size} upcoming games.")
+        } catch (e: Exception) {
+            isLoadingHotGames = false
+            Log.e(GameService::javaClass.name, "Error during load upcoming game page.", e)
         }
     }
 

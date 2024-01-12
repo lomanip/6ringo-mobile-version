@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,9 +42,14 @@ import com.example.android_6ringo.ui.theme.PlatiniumColor
 fun HomePage() {
     val navController = LocalComposeContext.current.navController
     val state = rememberHomePageState()
-    Column(Modifier.fillMaxSize()) {
+    Column(
+        Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())) {
         HomeBanner()
         Spacer(modifier = Modifier.height(32.dp))
         HomeHotGames(state)
+        Spacer(modifier = Modifier.height(32.dp))
+        HomeUpcomingGames(state)
     }
 }

@@ -50,7 +50,7 @@ fun HomeHotGames(state: HomePageState) {
     Column(Modifier.fillMaxWidth()) {
         Spacer(Modifier.height(8.dp))
         Box(Modifier.fillMaxWidth()) {
-            if(state.isLoadingHotGame) {
+            if(state.isLoadingHotGames) {
                 CircularProgressSurface()
             }else {
                 val pagerState = rememberPagerState(pageCount = {state.hotGames.size})
