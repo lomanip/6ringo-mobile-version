@@ -21,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -28,16 +29,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.LifecycleOwner
 import com.example.android_6ringo.LocalComposeContext
 import com.example.android_6ringo.R
+import com.example.android_6ringo.auth.services.AuthService
 import kotlinx.coroutines.delay
+import org.kodein.di.instance
 
 @Composable
 fun SplashScreen() {
+    val context = LocalContext.current
     val navController = LocalComposeContext.current.navController
+    val authService: AuthService by LocalComposeContext.current.container.kodein.instance()
     LaunchedEffect(Unit) {
         delay(2000)
-        navController.navigate("home")
+        authService.isInitState.observe(context as LifecycleOwner) {
+            if(it) {
+                navController.navigate("home")
+            }
+        }
+
     }
     val infiniteTransition = rememberInfiniteTransition(label = "logo")
     val angle by infiniteTransition.animateFloat(

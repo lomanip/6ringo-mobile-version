@@ -11,6 +11,7 @@ import com.example.android_6ringo.auth.models.User
 import com.example.android_6ringo.http.HttpClient
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import java.time.ZonedDateTime
 
 
 val AUTH_DATA_KEY = "AUTH_DATA"
@@ -33,21 +34,34 @@ class AuthService(
         }
         signInResult = objectMapper.readValue(authData!!)!!
 
+        if(signInResult!!.tokens.accessTokenExpiresAt.isBefore(ZonedDateTime.now())) {
+            removeSignInData()
+            this.isInitState.value = true
+            return
+        }
+
         user = refreshAuthUser(signInResult!!.id)
 
         isInitState.value = true
+    }
+
+    fun isLoggedIn():Boolean {
+        return user != null
     }
 
     suspend fun signIn(model: SignInModel) {
         val url = "$apiUrl/signin"
         val result = httpClient.post(url, model).bodyAs<SignInResultModel>()!!
         handleLoginResult(result)
+    }
 
+    fun signOut() {
+        removeSignInData()
     }
 
 
     private suspend fun handleLoginResult(result: SignInResultModel) {
-        val user = getUser(result.id)
+        user = getUser(result.id)
         with(authDataStore.sharedPreferences.edit()) {
             putString(AUTH_DATA_KEY, objectMapper.writeValueAsString(result))
             putString(AUTH_USER_KEY, objectMapper.writeValueAsString(user))
@@ -84,5 +98,13 @@ class AuthService(
     suspend fun me(): Me {
         val url = "$apiUrl/users/me"
         return httpClient.get(url).bodyAs<Me>()!!
+    }
+
+    private fun removeSignInData() {
+        with(authDataStore.sharedPreferences.edit()) {
+            remove(AUTH_DATA_KEY)
+            remove(AUTH_USER_KEY)
+            commit()
+        }
     }
 }

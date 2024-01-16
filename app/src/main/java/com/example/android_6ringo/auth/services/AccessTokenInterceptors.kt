@@ -19,8 +19,9 @@ class AccessTokenInterceptor(
         if (authDataValue != "") {
             val authData = objectMapper.readValue<SignInResultModel>(authDataValue!!)
             val request = chain.request().newBuilder()
-                .header("Authorization", "Bearer ${authData.token.accessToken}")
+                .header("Authorization", "Bearer ${authData.tokens.accessToken}")
                 .build()
+            Log.d(javaClass.name, "Bearer ${authData.tokens.accessToken}")
             return chain.proceed(request)
         }
         return chain.proceed(chain.request())

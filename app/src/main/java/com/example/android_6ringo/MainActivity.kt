@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
@@ -26,23 +27,44 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import com.example.android_6ringo.auth.services.AuthService
 import com.example.android_6ringo.ui.theme.Android6ringoTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.kodein.di.instance
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalComposeUiApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val authService: AuthService by this.container().kodein.instance()
+        CoroutineScope(Dispatchers.Main).launch {
+            authService.init()
+        }
 
         setContent {
             val navController = rememberNavController()
             val snackbarInfo = remember { SnackbarHostState() }
             val snackbarError = remember { SnackbarHostState() }
+            val coroutineScope = rememberCoroutineScope()
             val keyboard = LocalSoftwareKeyboardController.current
             val container = LocalContext.current.container()
 
             val composeContext =
                 ComposeContext(container, navController, keyboard, snackbarInfo, snackbarError)
+
+            container.networkErrorLive.observe(this) {
+                coroutineScope.launch {
+                    snackbarError.showSnackbar(
+                        "${it.message}", "", false,
+                        SnackbarDuration.Short
+                    )
+                }
+            }
+
+
 
             CompositionLocalProvider(
                 LocalComposeContext provides composeContext
@@ -51,10 +73,14 @@ class MainActivity : ComponentActivity() {
                 Android6ringoTheme {
                     Surface(
                         color = MaterialTheme.colorScheme.background,
-                        modifier = Modifier.fillMaxSize().imePadding()
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .imePadding()
                     ) {
                         Column(modifier = Modifier.fillMaxSize()) {
-                            Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
+                            Box(modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f)) {
                                 NavGraph()
                             }
                             SnackbarHost(

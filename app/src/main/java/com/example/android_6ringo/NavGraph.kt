@@ -21,6 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
 import com.example.android_6ringo.screens.SplashScreen
+import com.example.android_6ringo.screens.auth.AuthHomePage
 import com.example.android_6ringo.screens.auth.AuthPage
 import com.example.android_6ringo.screens.auth.signIn.SignInPage
 import com.example.android_6ringo.screens.auth.signUp.SignUpPage
@@ -64,6 +65,10 @@ fun NavGraph() {
                 AuthPage()
             }
 
+            composable("auth/home") {
+                AuthHomePage()
+            }
+
             composable("auth/signIn") {
                 SignInPage()
             }
@@ -75,6 +80,7 @@ fun NavGraph() {
 
         NavigationBar(Modifier.fillMaxWidth()) {
             val currentBackStackEntry = navController.currentBackStackEntryAsState()
+            val route = currentBackStackEntry.value?.destination?.route
             NavigationBarItem(selected = currentBackStackEntry.value?.destination?.route == "home",
                 onClick = { navController.navigate("home") },
                 icon = { Icon(imageVector = Icons.Outlined.Home, contentDescription = "") },
@@ -82,7 +88,7 @@ fun NavGraph() {
             )
 
             NavigationBarItem(
-                selected = currentBackStackEntry.value?.destination?.route?.startsWith("games/") ?: false,
+                selected = route?.startsWith("games/") ?: false,
                 onClick = { navController.navigate("games/list") },
                 icon = { Icon(imageVector = Icons.Outlined.MonetizationOn, contentDescription = "") },
                 label = {Text("Jeux")}
@@ -90,7 +96,7 @@ fun NavGraph() {
 
 
 
-            NavigationBarItem(selected = false, onClick = { /*TODO*/ },
+            NavigationBarItem(route?.startsWith("tickets/") ?: false, onClick = { /*TODO*/ },
                 icon = { Icon(imageVector = Icons.Outlined.ConfirmationNumber, contentDescription = "") },
                 label = {Text("Tickets")}
             )
@@ -100,7 +106,8 @@ fun NavGraph() {
                 label = {Text("Panier")}
             )
 
-            NavigationBarItem(selected = false, onClick = { navController.navigate("auth") },
+            NavigationBarItem(selected = route?.startsWith("auth/") ?: false,
+                onClick = { navController.navigate("auth") },
                 icon = { Icon(imageVector = Icons.Outlined.AccountCircle, contentDescription = "") },
                 label = { Text("Compte") }
             )

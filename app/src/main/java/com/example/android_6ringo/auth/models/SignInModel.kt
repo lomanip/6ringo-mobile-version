@@ -10,7 +10,7 @@ class SignInResultModel {
     var approved: Boolean = false
 
     var roles = listOf<String>()
-    var token = SignInToken()
+    var tokens = SignInToken()
 }
 
 class SignInToken {
