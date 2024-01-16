@@ -7,6 +7,6 @@ class Ringo6Application:Application() {
 
     override fun onCreate() {
         super.onCreate()
-        container = Container().setupApplicationService()
+        container = Container().setupApplicationService(this)
     }
 }

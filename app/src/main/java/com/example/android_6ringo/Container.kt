@@ -1,7 +1,12 @@
 package com.example.android_6ringo
 
 import android.content.Context
+import androidx.lifecycle.MutableLiveData
+import com.example.android_6ringo.auth.services.AccessTokenInterceptor
+import com.example.android_6ringo.auth.services.AuthDataStore
+import com.example.android_6ringo.auth.services.AuthService
 import com.example.android_6ringo.http.HttpClient
+import com.example.android_6ringo.http.HttpErrorInterceptor
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -22,7 +27,10 @@ import java.util.TimeZone
 
 class Container  {
     lateinit var kodein : DI
-    fun setupApplicationService(): Container {
+    val networkErrorLive = MutableLiveData<Exception>()
+    fun setupApplicationService(context: Context): Container {
+        val authDataStore = AuthDataStore(context)
+
         val objectMapper = ObjectMapper()
         objectMapper.configure(SerializationFeature.WRITE_DATES_WITH_CONTEXT_TIME_ZONE, true)
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
@@ -42,10 +50,18 @@ class Container  {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
 
+        val accessTokenInterceptor = AccessTokenInterceptor(authDataStore, objectMapper)
+        val connectInterceptor = HttpErrorInterceptor(networkErrorLive)
+
         val okHttpClient= OkHttpClient()
             .newBuilder()
             .addInterceptor(loggingInterceptor)
+            .addInterceptor(accessTokenInterceptor)
+            .addInterceptor(connectInterceptor)
             .build()
+
+
+
 
         val kodein = DI {
             bindSingleton { okHttpClient }
@@ -53,6 +69,8 @@ class Container  {
             bindSingleton { GameService(instance()) }
 
             bindProvider<HttpClient> { HttpClient(instance(), instance()) }
+
+            bindSingleton { AuthService(instance(), instance(), authDataStore) }
         }
         this.kodein = kodein
         return this

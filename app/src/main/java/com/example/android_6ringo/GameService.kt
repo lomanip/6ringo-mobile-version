@@ -7,8 +7,9 @@ import com.example.android_6ringo.models.PagingOptions
 import com.example.android_6ringo.models.PagingResult
 
 
+
 class GameService(var _httpClient: HttpClient) {
-    var _url = "https://6ringo.com/6ringo-api/micro-game/games"
+    var _url = "${BuildConfig.SERVER_URL}/micro-game/games"
 
     suspend fun paginate(category: String, pageOptions: PagingOptions = PagingOptions(orderBy = "createAt")
                          ): PagingResult<Game> {

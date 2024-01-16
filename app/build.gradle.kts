@@ -27,6 +27,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "SERVER_URL", "\"https://6ringo.com/6ringo-api\"")
+        }
+
+        debug {
+            buildConfigField("String", "SERVER_URL", "\"https://6ringo.com/6ringo-api\"")
         }
     }
     compileOptions {
@@ -38,6 +43,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -87,5 +93,10 @@ dependencies {
     implementation ("org.kodein.di:kodein-di:7.19.0")
     implementation ("androidx.compose.runtime:runtime-livedata")
     implementation ("io.coil-kt:coil-compose:2.5.0")
+
+
+    implementation ("androidx.security:security-crypto:1.0.0")
+    implementation ("androidx.security:security-identity-credential:1.0.0-alpha03")
+    implementation ("androidx.security:security-app-authenticator:1.0.0-alpha03")
 
 }

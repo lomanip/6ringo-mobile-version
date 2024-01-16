@@ -21,6 +21,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
 import com.example.android_6ringo.screens.SplashScreen
+import com.example.android_6ringo.screens.auth.AuthPage
+import com.example.android_6ringo.screens.auth.signIn.SignInPage
+import com.example.android_6ringo.screens.auth.signUp.SignUpPage
 import com.example.android_6ringo.screens.games.GameListPage
 import com.example.android_6ringo.screens.games.home.GameHomePage
 import com.example.android_6ringo.screens.home.HomePage
@@ -56,6 +59,18 @@ fun NavGraph() {
                 val gameId = it.arguments!!.getString("gameId") ?: ""
                 GameHomePage(gameId)
             }
+
+            composable("auth"){
+                AuthPage()
+            }
+
+            composable("auth/signIn") {
+                SignInPage()
+            }
+
+            composable("auth/signUp") {
+                SignUpPage()
+            }
         }
 
         NavigationBar(Modifier.fillMaxWidth()) {
@@ -85,7 +100,7 @@ fun NavGraph() {
                 label = {Text("Panier")}
             )
 
-            NavigationBarItem(selected = false, onClick = { /*TODO*/ },
+            NavigationBarItem(selected = false, onClick = { navController.navigate("auth") },
                 icon = { Icon(imageVector = Icons.Outlined.AccountCircle, contentDescription = "") },
                 label = { Text("Compte") }
             )
