@@ -6,6 +6,7 @@ class Game {
     var createAt = ZonedDateTime.now()
     var updateAt = ZonedDateTime.now()
 
+    var id: String = ""
     var _id: String = ""
     var name: String = ""
     var description: String? = null

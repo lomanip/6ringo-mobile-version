@@ -22,6 +22,10 @@ class SignInToken {
 }
 
 data class RefreshTokenModel(var refreshToken: String)
-class RefreshTokenResult()
+class RefreshTokenResult() {
+    var tokenId = ""
+    var accessToken = ""
+    var accessTokenExpiresAt = ZonedDateTime.now()
+}
 
 data class Me(var id: String, var email: String, var name: String)

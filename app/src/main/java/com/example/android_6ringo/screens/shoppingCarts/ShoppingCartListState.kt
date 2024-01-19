@@ -42,6 +42,10 @@ class ShoppingCartListState(
     var isLoading by mutableStateOf(false)
     var isPristine by mutableStateOf(true)
 
+    fun remove(shoppingCart: ShoppingCart) {
+        shoppingCarts = shoppingCarts.filter { it != shoppingCart }
+    }
+
     suspend fun load() {
         try {
             isLoading = true

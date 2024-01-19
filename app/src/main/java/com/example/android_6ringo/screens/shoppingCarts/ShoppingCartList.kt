@@ -2,6 +2,7 @@ package com.example.android_6ringo.screens.shoppingCarts
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.android_6ringo.LocalComposeContext
 import com.example.android_6ringo.R
 import kotlinx.coroutines.launch
 
@@ -40,17 +42,21 @@ fun ShoppingCartList(state: ShoppingCartListState) {
     }
 
 
+
     Column(Modifier.fillMaxWidth()) {
-        LazyColumn(state = state.listState,
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp)) {
+        LazyColumn(state = state.listState) {
 
             item {
-                Text("${state.shoppingCarts.size} articles")
+                Spacer(Modifier.height(16.dp))
             }
 
-            items(state.shoppingCarts, key = { it.gameId }) { shoppingCart ->
-                ShoppingCartListItem(Modifier.fillMaxSize(), shoppingCart, {})
+            items(state.shoppingCarts, key = { it.game?.id ?: ""  }) { shoppingCart ->
+                val navController = LocalComposeContext.current.navController
+                ShoppingCartListItem(Modifier.fillMaxWidth().clickable {
+                    navController.navigate("games/${shoppingCart.game?.id}")
+                }, shoppingCart) {
+                    state.remove(shoppingCart)
+                }
             }
 
             item {

@@ -23,7 +23,7 @@ class ShoppingCartService(private var _httpClient: HttpClient) {
     }
 
     suspend fun delete(user: User, game: Game): Unit {
-        _httpClient.delete("$_url/${user.id}/items/${game._id}")
+        _httpClient.delete("$_url/${user.id}/items/${game.id}")
     }
 
     suspend fun deleteAll(user: User): Unit {
