@@ -15,7 +15,6 @@ class AccessTokenInterceptor(
         val sharedPreferences = authDataStore.sharedPreferences
         val authDataValue = sharedPreferences.getString(AUTH_DATA_KEY, "")
 
-
         if (authDataValue != "") {
             val authData = objectMapper.readValue<SignInResultModel>(authDataValue!!)
             val request = chain.request().newBuilder()

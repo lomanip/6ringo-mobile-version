@@ -12,5 +12,6 @@ class User {
     var resetKey = ""
     var emailVerified = false
     var verifyKey = ""
-    var verifyKeyTimestamp = LocalDate.MIN
+
+    //var verifyKeyTimestamp = LocalDate.MIN
 }

@@ -27,11 +27,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("String", "SERVER_URL", "\"https://6ringo.com/6ringo-api\"")
+            buildConfigField("String", "SERVER_URL", "\"https://api.6ringo.com/6ringo-api\"")
         }
 
         debug {
-            buildConfigField("String", "SERVER_URL", "\"https://6ringo.com/6ringo-api\"")
+            buildConfigField("String", "SERVER_URL", "\"https://api.6ringo.com/6ringo-api\"")
         }
     }
     compileOptions {

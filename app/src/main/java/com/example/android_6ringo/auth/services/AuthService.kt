@@ -7,6 +7,8 @@ import com.example.android_6ringo.BuildConfig
 import com.example.android_6ringo.auth.models.Me
 import com.example.android_6ringo.auth.models.SignInModel
 import com.example.android_6ringo.auth.models.SignInResultModel
+import com.example.android_6ringo.auth.models.SignUpModel
+import com.example.android_6ringo.auth.models.SignUpResultModel
 import com.example.android_6ringo.auth.models.User
 import com.example.android_6ringo.http.HttpClient
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -52,7 +54,16 @@ class AuthService(
     suspend fun signIn(model: SignInModel) {
         val url = "$apiUrl/signin"
         val result = httpClient.post(url, model).bodyAs<SignInResultModel>()!!
+
+        Log.d(javaClass.name, result.tokens.accessToken)
         handleLoginResult(result)
+    }
+
+    suspend fun signUp(model: SignUpModel): String {
+        val url = "$apiUrl/signup"
+        val result = httpClient.post(url, model).bodyAs<String>()!!
+
+        return result
     }
 
     fun signOut() {
@@ -60,10 +71,17 @@ class AuthService(
     }
 
 
+
+
     private suspend fun handleLoginResult(result: SignInResultModel) {
-        user = getUser(result.id)
+        // Do it before sa that interceptor can get access token to get user info
         with(authDataStore.sharedPreferences.edit()) {
             putString(AUTH_DATA_KEY, objectMapper.writeValueAsString(result))
+            commit()
+        }
+
+        user = getUser(result.id)
+        with(authDataStore.sharedPreferences.edit()) {
             putString(AUTH_USER_KEY, objectMapper.writeValueAsString(user))
             commit()
         }
@@ -106,5 +124,7 @@ class AuthService(
             remove(AUTH_USER_KEY)
             commit()
         }
+        user = null
+        signInResult = null
     }
 }

@@ -66,7 +66,7 @@ class SignOutViewModel(var composeContext: ComposeContext,
     suspend fun logout() {
         logoutWaiting.value = true
         try {
-            authService.isLoggedIn()
+            authService.signOut()
             logoutWaiting.value = false
             onSave()
             close()

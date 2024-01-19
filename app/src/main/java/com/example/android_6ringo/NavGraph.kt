@@ -28,6 +28,7 @@ import com.example.android_6ringo.screens.auth.signUp.SignUpPage
 import com.example.android_6ringo.screens.games.GameListPage
 import com.example.android_6ringo.screens.games.home.GameHomePage
 import com.example.android_6ringo.screens.home.HomePage
+import com.example.android_6ringo.screens.shoppingCarts.ShoppingCartListPage
 
 val GAME_LIST_ROUTE= "games/list?category={category}"
 @Composable
@@ -59,6 +60,10 @@ fun NavGraph() {
             composable("games/{gameId}") {
                 val gameId = it.arguments!!.getString("gameId") ?: ""
                 GameHomePage(gameId)
+            }
+
+            composable("cart"){
+                ShoppingCartListPage()
             }
 
             composable("auth"){
@@ -101,7 +106,8 @@ fun NavGraph() {
                 label = {Text("Tickets")}
             )
 
-            NavigationBarItem(selected = false, onClick = { /*TODO*/ },
+            NavigationBarItem(route?.startsWith("cart/") ?: false,
+                onClick = { navController.navigate("cart") },
                 icon = { Icon(imageVector = Icons.Outlined.Star, contentDescription = "") },
                 label = {Text("Panier")}
             )

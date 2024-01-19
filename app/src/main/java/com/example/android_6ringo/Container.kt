@@ -7,6 +7,8 @@ import com.example.android_6ringo.auth.services.AuthDataStore
 import com.example.android_6ringo.auth.services.AuthService
 import com.example.android_6ringo.http.HttpClient
 import com.example.android_6ringo.http.HttpErrorInterceptor
+import com.example.android_6ringo.services.GameService
+import com.example.android_6ringo.services.ShoppingCartService
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -67,6 +69,7 @@ class Container  {
             bindSingleton { okHttpClient }
             bindSingleton { objectMapper }
             bindSingleton { GameService(instance()) }
+            bindSingleton { ShoppingCartService(instance()) }
 
             bindProvider<HttpClient> { HttpClient(instance(), instance()) }
 

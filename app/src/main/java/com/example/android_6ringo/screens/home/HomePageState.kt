@@ -8,10 +8,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import com.example.android_6ringo.GameService
 import com.example.android_6ringo.LocalComposeContext
 import com.example.android_6ringo.entities.Game
 import com.example.android_6ringo.models.PagingOptions
+import com.example.android_6ringo.services.GameService
 import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.instance
 

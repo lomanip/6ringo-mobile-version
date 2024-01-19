@@ -9,8 +9,12 @@ import com.example.android_6ringo.http.HttpClient
 import com.example.android_6ringo.models.PagingOptions
 import com.example.android_6ringo.models.PagingResult
 
-data class CountModel(var count:Int)
-data class ListItem<T>(var items: List<T>)
+class CountModel {
+    var count:Int = 0
+}
+class ListItem<T> {
+    var items: List<T> = listOf()
+}
 class ShoppingCartService(private var _httpClient: HttpClient) {
     private val _url = "${BuildConfig.SERVER_URL}/micro-shopping/carts"
 
@@ -26,7 +30,7 @@ class ShoppingCartService(private var _httpClient: HttpClient) {
         _httpClient.delete("$_url/${user.id}")
     }
 
-    suspend fun get(user: User): List<ShoppingCart> {
+    suspend fun list(user: User): List<ShoppingCart> {
         val result = _httpClient.get("$_url/${user.id}").bodyAs<ListItem<ShoppingCart>>()!!
         return result.items
     }
