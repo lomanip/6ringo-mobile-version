@@ -42,6 +42,9 @@ class ShoppingCartListState(
     var isLoading by mutableStateOf(false)
     var isPristine by mutableStateOf(true)
 
+    fun totalPrice(): Int {
+        return shoppingCarts.sumOf { (it.game?.price ?: 0) * it.quantity }
+    }
     fun remove(shoppingCart: ShoppingCart) {
         shoppingCarts = shoppingCarts.filter { it != shoppingCart }
     }

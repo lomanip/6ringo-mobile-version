@@ -5,6 +5,8 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.android_6ringo.BuildConfig
 import com.example.android_6ringo.auth.models.Me
+import com.example.android_6ringo.auth.models.RefreshTokenModel
+import com.example.android_6ringo.auth.models.RefreshTokenResult
 import com.example.android_6ringo.auth.models.SignInModel
 import com.example.android_6ringo.auth.models.SignInResultModel
 import com.example.android_6ringo.auth.models.SignUpModel
@@ -66,6 +68,14 @@ class AuthService(
         return result
     }
 
+    suspend fun refreshToken() {
+        val url = "$apiUrl/refreshToken"
+        val refreshTokenModel = RefreshTokenModel(signInResult!!.tokens.refreshToken)
+        val result = httpClient.post(url, refreshTokenModel).bodyAs<RefreshTokenResult>()!!
+
+        //TODO
+    }
+
     fun signOut() {
         removeSignInData()
     }
@@ -87,6 +97,8 @@ class AuthService(
         }
         signInResult = result
     }
+
+
 
     private suspend fun refreshAuthUser(id: String): User {
         lateinit var currentUser: User

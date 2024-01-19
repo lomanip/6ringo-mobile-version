@@ -4,6 +4,8 @@ import com.example.android_6ringo.BuildConfig
 import com.example.android_6ringo.auth.models.User
 import com.example.android_6ringo.entities.Game
 import com.example.android_6ringo.entities.ShoppingCart
+import com.example.android_6ringo.entities.ShoppingCartAddModel
+import com.example.android_6ringo.entities.ShoppingCartAddResult
 import com.example.android_6ringo.helpers.toQueryParams
 import com.example.android_6ringo.http.HttpClient
 import com.example.android_6ringo.models.PagingOptions
@@ -33,6 +35,17 @@ class ShoppingCartService(private var _httpClient: HttpClient) {
     suspend fun list(user: User): List<ShoppingCart> {
         val result = _httpClient.get("$_url/${user.id}").bodyAs<ListItem<ShoppingCart>>()!!
         return result.items
+    }
+
+    suspend fun add(user: User, game: Game): ShoppingCartAddResult {
+        val model = ShoppingCartAddModel()
+        model.gameId = game.getNonNullId()
+        model.quantity = 1
+        val result = _httpClient.post("$_url/${user.id}/items", model)
+            .bodyAs<ShoppingCartAddResult>()!!
+
+        return result
+
     }
 
 

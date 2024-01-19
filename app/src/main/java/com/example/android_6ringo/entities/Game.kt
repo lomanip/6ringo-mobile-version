@@ -21,5 +21,10 @@ class Game {
     var article: Article? = null
     var articleId = ""
 
-
+    fun getNonNullId(): String {
+        if(_id.isNotBlank()) {
+            return _id
+        }
+        return id
+    }
 }

@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -52,10 +53,22 @@ fun ShoppingCartList(state: ShoppingCartListState) {
 
             items(state.shoppingCarts, key = { it.game?.id ?: ""  }) { shoppingCart ->
                 val navController = LocalComposeContext.current.navController
-                ShoppingCartListItem(Modifier.fillMaxWidth().clickable {
-                    navController.navigate("games/${shoppingCart.game?.id}")
-                }, shoppingCart) {
+                ShoppingCartListItem(
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            navController.navigate("games/${shoppingCart.game?.id}")
+                        }, shoppingCart) {
                     state.remove(shoppingCart)
+                }
+            }
+
+            item {
+                if (!state.isLoading) {
+                    Spacer(Modifier.height(16.dp))
+                    Button(onClick = { /*TODO*/ }, modifier=Modifier.fillMaxWidth()) {
+                        Text(text = "Acheter maintenant ($${state.totalPrice()})")
+                    }
                 }
             }
 

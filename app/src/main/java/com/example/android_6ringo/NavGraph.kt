@@ -106,7 +106,7 @@ fun NavGraph() {
                 label = {Text("Tickets")}
             )
 
-            NavigationBarItem(route?.startsWith("cart/") ?: false,
+            NavigationBarItem(route?.startsWith("cart") ?: false,
                 onClick = { navController.navigate("cart") },
                 icon = { Icon(imageVector = Icons.Outlined.Star, contentDescription = "") },
                 label = {Text("Panier")}

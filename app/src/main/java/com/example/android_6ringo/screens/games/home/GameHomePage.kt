@@ -25,11 +25,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -51,6 +54,7 @@ import com.example.android_6ringo.LocalComposeContext
 import com.example.android_6ringo.helpers.LONG_DATE_FORMAT
 import com.example.android_6ringo.helpers.formatGameStatus
 import com.example.android_6ringo.helpers.getStatusColor
+import com.example.android_6ringo.ui.theme.AlertLoading
 import com.example.android_6ringo.ui.theme.CircularProgressSurface
 import kotlinx.coroutines.launch
 
@@ -62,6 +66,10 @@ fun GameHomePage(id: String) {
 
     LaunchedEffect(Unit) {
         state.load()
+    }
+
+    AlertLoading(state = state.addToCartWaiting) {
+        Text(text = "Ajout au panier", style = MaterialTheme.typography.bodySmall)
     }
 
     GameHomeScaffold(state = state) {
@@ -153,6 +161,23 @@ fun GameHomePage(id: String) {
                             Modifier
                                 .fillMaxWidth()) {
                             Button(onClick = { /*TODO*/ }, modifier = Modifier.fillMaxWidth()) {
+                                Icon(imageVector = Icons.Filled.PlayArrow, "Play game")
+                                Spacer(Modifier.width(8.dp))
+                                Text("Jouer $${state.game.price}")
+                            }
+                        }
+                        Spacer(Modifier.height(8.dp))
+                        Row(
+                            Modifier
+                                .fillMaxWidth()) {
+                            OutlinedButton(onClick = {
+                                state.scope.launch {
+                                    state.onAddToCartClick()
+                                }
+                                                     },
+                                modifier = Modifier.fillMaxWidth()) {
+                                Icon(imageVector = Icons.Filled.Star, "Play game")
+                                Spacer(Modifier.width(8.dp))
                                 Text("Ajouter au panier $${state.game.price}")
                             }
                         }

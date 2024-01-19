@@ -5,6 +5,11 @@ class ShoppingCart {
     var game: Game? = null
     var quantity: Int = 0
 }
+
+class ShoppingCartAddModel {
+    var gameId = ""
+    var quantity: Int = 0
+}
 class ShoppingCartAddResult() {
     var userId: String = ""
     var items: List<ShoppingCart> = listOf<ShoppingCart>()
