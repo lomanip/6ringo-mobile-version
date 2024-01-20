@@ -19,3 +19,9 @@ val OrangeLight = Color(0xFFFFC337)
 val GoldColor = Color(0xFFA98700)
 val PlatiniumColor = Color(0xFF797E84)
 val DiamondColor=Color(0xFF1A8CA9)
+
+val MsErrorBg = Color(0xFFa80000)
+val MsErrorContent = Color(0xFFfde7e9)
+
+val MsSuccessBg = Color(0xFF107c10)
+val MsSuccessContent = Color(0xFFdff6dd)
