@@ -1,0 +1,1 @@
+enum CurrencyEnum { xaf }

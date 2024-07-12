@@ -1,0 +1,66 @@
+name: six_ringo
+description: "6ringo official mobile app"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.4.0-282.1.beta <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  equatable: ^2.0.0  #Compare objects
+  dio: ^5.4.3+1  #HTTP requests
+  get_it: ^7.7.0  #Service Locator for DI
+  flutter_bloc: ^8.1.5  #Business Logic Component design pattern
+  bloc: ^8.1.4  #Business Logic Component design pattern
+  flutter_secure_storage: ^9.2.2  #Secure preferences
+  logger: ^2.3.0  #Logger which prints beautiful logs
+  flutter_native_splash: ^2.4.0  #Customize Flutter's default white native splash screen
+  timeago: ^3.6.1  #Show time ago from data time
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^4.0.0
+  build_runner: ^2.4.9  #Build system for Dart code generation and modular compilation
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/images/countries/
+    - assets/images/operators/
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/images/splash/logo.png
+  #branding: assets/images/splash/branding.png
+  #background_image: "assets/images/splash/background.png"
+  #color_dark: "#042a49"
+  #image_dark: assets/images/splash/logo_dark.png
+  #branding_dark: assets/images/splash/branding_dark.png
+  #background_image_dark: "assets/images/splash/background_dark.png"
+
+  android_12:
+  #image: assets/images/splash/logo_android_s.png
+  #color: "#ffffff"
+  #icon_background_color: "#ffffff"
+  #branding: assets/images/splash/branding_android_s.png
+  #image_dark: assets/images/splash/logo_android_s_dark.png
+  #color_dark: "#000000"
+  #icon_background_color_dark: "#000000"
+
+  #android: false
+  #ios: false
+  #web: false
+
+  #android_gravity: center
+  #ios_content_mode: center
+  #web_image_mode: center
+
+  #fullscreen: true
